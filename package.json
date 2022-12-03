@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node "
+    "start": "ts-node ./packages/2022/src/lib/day-${DAY:-1}/index.ts"
   },
   "private": true,
   "dependencies": {

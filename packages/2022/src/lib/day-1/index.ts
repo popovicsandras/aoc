@@ -1,23 +1,16 @@
 import { resolve } from 'path';
-import { createReadStream } from "fs";
-import * as readline from 'readline';
+import readLinesFromFile from '../utils/file-reader';
 
-async function processLineByLine() {
+const main = async () => {
+  const fileReader = readLinesFromFile(resolve(__dirname, 'input.txt'));
+
   let max = [0, 0, 0];
-  const fileStream = createReadStream(resolve(__dirname, 'input.txt'));
-
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
-  });
-
   let counter = 0;
-  for await (const line of rl) {
+  for await (let line of fileReader) {
     if (line.trim() === '') {
       for (let i = 0; i < max.length; i++){
         if (counter > max[i]) {
           max[i] = counter;
-          console.log(`Reset: ${max}`);
           break;
         }
       }
@@ -26,8 +19,8 @@ async function processLineByLine() {
       counter += parseInt(line, 10);
     }
   }
-
+  console.log(max[0]);
   console.log(max[0] + max[1] + max[2]);
 }
 
-processLineByLine();
+main();

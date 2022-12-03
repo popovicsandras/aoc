@@ -1,36 +1,35 @@
 import { resolve } from 'path';
-import { createReadStream } from "fs";
-import * as readline from 'readline';
+import readLinesFromFile from '../utils/file-reader';
 
-// enum CHOICE_PLAYER_1 {
-//   ROCK = 'A',
-//   PAPER = 'B',
-//   SCISSOR = 'C'
-// }
+enum CHOICE_PLAYER_1 {
+  ROCK = 'A',
+  PAPER = 'B',
+  SCISSOR = 'C'
+}
 
-// enum CHOICE_PLAYER_2 {
-//   ROCK = 'X',
-//   PAPER = 'Y',
-//   SCISSOR = 'Z'
-// }
+enum CHOICE_PLAYER_2 {
+  ROCK = 'X',
+  PAPER = 'Y',
+  SCISSOR = 'Z'
+}
 
-// const shapeScore = {
-//   X: 1,
-//   Y: 2,
-//   Z: 3
-// }
+const shapeScore = {
+  X: 1,
+  Y: 2,
+  Z: 3
+}
 
-// const outcomeScores = {
-//   [`${CHOICE_PLAYER_1.ROCK} ${CHOICE_PLAYER_2.ROCK}`]: 3,
-//   [`${CHOICE_PLAYER_1.ROCK} ${CHOICE_PLAYER_2.PAPER}`]: 6,
-//   [`${CHOICE_PLAYER_1.ROCK} ${CHOICE_PLAYER_2.SCISSOR}`]: 0,
-//   [`${CHOICE_PLAYER_1.PAPER} ${CHOICE_PLAYER_2.ROCK}`]: 0,
-//   [`${CHOICE_PLAYER_1.PAPER} ${CHOICE_PLAYER_2.PAPER}`]: 3,
-//   [`${CHOICE_PLAYER_1.PAPER} ${CHOICE_PLAYER_2.SCISSOR}`]: 6,
-//   [`${CHOICE_PLAYER_1.SCISSOR} ${CHOICE_PLAYER_2.ROCK}`]: 6,
-//   [`${CHOICE_PLAYER_1.SCISSOR} ${CHOICE_PLAYER_2.PAPER}`]: 0,
-//   [`${CHOICE_PLAYER_1.SCISSOR} ${CHOICE_PLAYER_2.SCISSOR}`]: 3
-// }
+const outcomeScores = {
+  [`${CHOICE_PLAYER_1.ROCK} ${CHOICE_PLAYER_2.ROCK}`]: 3,
+  [`${CHOICE_PLAYER_1.ROCK} ${CHOICE_PLAYER_2.PAPER}`]: 6,
+  [`${CHOICE_PLAYER_1.ROCK} ${CHOICE_PLAYER_2.SCISSOR}`]: 0,
+  [`${CHOICE_PLAYER_1.PAPER} ${CHOICE_PLAYER_2.ROCK}`]: 0,
+  [`${CHOICE_PLAYER_1.PAPER} ${CHOICE_PLAYER_2.PAPER}`]: 3,
+  [`${CHOICE_PLAYER_1.PAPER} ${CHOICE_PLAYER_2.SCISSOR}`]: 6,
+  [`${CHOICE_PLAYER_1.SCISSOR} ${CHOICE_PLAYER_2.ROCK}`]: 6,
+  [`${CHOICE_PLAYER_1.SCISSOR} ${CHOICE_PLAYER_2.PAPER}`]: 0,
+  [`${CHOICE_PLAYER_1.SCISSOR} ${CHOICE_PLAYER_2.SCISSOR}`]: 3
+}
 
 enum CHOICE {
   ROCK = 'A',
@@ -44,7 +43,7 @@ enum OUTCOME {
   WIN = 'Z'
 }
 
-const shapeScore = {
+const choiceScore = {
   [CHOICE.ROCK]: 1,
   [CHOICE.PAPER]: 2,
   [CHOICE.SCISSOR]: 3
@@ -57,42 +56,32 @@ const outcome = {
 }
 
 const playerScores = {
-  [`${CHOICE.ROCK} ${OUTCOME.LOOSE}`]: shapeScore[CHOICE.SCISSOR],
-  [`${CHOICE.ROCK} ${OUTCOME.DRAW}`]: shapeScore[CHOICE.ROCK],
-  [`${CHOICE.ROCK} ${OUTCOME.WIN}`]: shapeScore[CHOICE.PAPER],
-  [`${CHOICE.PAPER} ${OUTCOME.LOOSE}`]: shapeScore[CHOICE.ROCK],
-  [`${CHOICE.PAPER} ${OUTCOME.DRAW}`]: shapeScore[CHOICE.PAPER],
-  [`${CHOICE.PAPER} ${OUTCOME.WIN}`]: shapeScore[CHOICE.SCISSOR],
-  [`${CHOICE.SCISSOR} ${OUTCOME.LOOSE}`]: shapeScore[CHOICE.PAPER],
-  [`${CHOICE.SCISSOR} ${OUTCOME.DRAW}`]: shapeScore[CHOICE.SCISSOR],
-  [`${CHOICE.SCISSOR} ${OUTCOME.WIN}`]: shapeScore[CHOICE.ROCK]
+  [`${CHOICE.ROCK} ${OUTCOME.LOOSE}`]: choiceScore[CHOICE.SCISSOR],
+  [`${CHOICE.ROCK} ${OUTCOME.DRAW}`]: choiceScore[CHOICE.ROCK],
+  [`${CHOICE.ROCK} ${OUTCOME.WIN}`]: choiceScore[CHOICE.PAPER],
+  [`${CHOICE.PAPER} ${OUTCOME.LOOSE}`]: choiceScore[CHOICE.ROCK],
+  [`${CHOICE.PAPER} ${OUTCOME.DRAW}`]: choiceScore[CHOICE.PAPER],
+  [`${CHOICE.PAPER} ${OUTCOME.WIN}`]: choiceScore[CHOICE.SCISSOR],
+  [`${CHOICE.SCISSOR} ${OUTCOME.LOOSE}`]: choiceScore[CHOICE.PAPER],
+  [`${CHOICE.SCISSOR} ${OUTCOME.DRAW}`]: choiceScore[CHOICE.SCISSOR],
+  [`${CHOICE.SCISSOR} ${OUTCOME.WIN}`]: choiceScore[CHOICE.ROCK]
 }
 
-async function processLineByLine() {
-  const fileStream = createReadStream(resolve(__dirname, 'input.txt'));
+const main = async () => {
+  const fileReader = readLinesFromFile(resolve(__dirname, 'input.txt'));
 
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
-  });
+  let sumA = 0;
+  let sumB = 0;
+  for await (let line of fileReader) {
+    const player2Choice = line.replace(/[ABC ]/, '').trim() as keyof typeof shapeScore;
+    sumA += outcomeScores[line] + shapeScore[player2Choice];
 
-  // let sum = 0;
-  // for await (const line of rl) {
-  //   const player2Choice = line.replace(/[ABC ]/, '').trim() as keyof typeof shapeScore;
-  //   console.log(player2Choice, shapeScore[player2Choice]);
-  //   sum += outcomeScores[line] + shapeScore[player2Choice];
-  // }
-
-  // console.log(sum);
-
-  let sum = 0;
-  for await (const line of rl) {
     const outcomeKey = line.replace(/[ABC ]/, '').trim() as keyof typeof outcome;
     const outcomeScore = outcome[outcomeKey];
-    sum += playerScores[line] + outcomeScore;
+    sumB += playerScores[line] + outcomeScore;
   }
-
-  console.log(sum);
+  console.log(sumA);
+  console.log(sumB);
 }
 
-processLineByLine();
+main();
