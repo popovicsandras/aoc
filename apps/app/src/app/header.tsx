@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 
 export function Header() {
-  return (<header css={css({ marginBottom: 16 })}>
+  return (<header css={css({ marginBottom: 16, height: 22 })}>
     <h1>
       <a href="/" css={css({
         display: 'inline-block',

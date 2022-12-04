@@ -5,16 +5,13 @@ import { Header } from './header';
 import { GlobalStyles } from './global-styles';
 import { Navigation } from './navigation';
 import { SolutionPreview } from './solution-preview';
-// import days from '@aoc/2022';
-
-// console.log(days);
 
 export function App() {
   return (
     <>
       <GlobalStyles />
       <Header />
-      <div css={css({display: 'flex', gap: '16px', width: '100%'})}>
+      <div css={css({display: 'flex', gap: '16px', minHeight: 'calc(100% - 38px)'})}>
         <Navigation />
         <Routes>
           <Route path="/" element={<SolutionPreview />}/>
