@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/aoc'>
       <App />
     </BrowserRouter>
   </StrictMode>
