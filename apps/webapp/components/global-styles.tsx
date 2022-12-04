@@ -76,7 +76,7 @@ export function GlobalStyles() {
               height: 100%;
             }
 
-            #root {
+            #__next {
               height: 100%;
             }
 
