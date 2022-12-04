@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@aoc-2022/aoc-2022": ["packages/aoc-2022/src/index.ts"]
+      "@aoc/2022": ["packages/2022/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
