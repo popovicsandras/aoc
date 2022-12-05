@@ -10,7 +10,7 @@ export function Navigation() {
           return (
             <li key={`day-${index+1}`}>
               <Link
-                href={isActive ? `day/${index + 1}` : '#'}
+                href={isActive ? `/day/${index + 1}` : '#'}
                 css={css({
                   ...(!isActive ? {
                     pointerEvents: 'none',

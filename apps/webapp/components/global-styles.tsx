@@ -88,5 +88,56 @@ export function GlobalStyles() {
             a:hover {
               color: #99ff99;
             }
+
+            article h2 + * {
+              margin-top: 0;
+            }
+
+            article h2 {
+              color: #ffffff;
+              margin-top: 1em;
+              margin-bottom: 1em;
+              white-space: nowrap;
+            }
+
+            article p {
+              display: block;
+              margin-block-start: 1em;
+              margin-block-end: 1em;
+              margin-inline-start: 0px;
+              margin-inline-end: 0px;
+            }
+
+            article em.star {
+              color: #ffff66;
+              font-style: normal;
+              text-shadow: 0 0 5px #ffff66;
+            }
+
+            article em {
+              color: #ffffff;
+              font-style: normal;
+              text-shadow: 0 0 5px #ffffff;
+            }
+
+            article code {
+              position: relative;
+              display: inline-block;
+              margin: 0;
+              padding: 0;
+            }
+
+            article code:before {
+              z-index: -1;
+              content: "";
+              position: absolute;
+              display: block;
+              left: -2px;
+              right: -2px;
+              top: 3px;
+              bottom: 0px;
+              border: 1px solid #333340;
+              background: #10101a;
+            }
           `} />);
 }
