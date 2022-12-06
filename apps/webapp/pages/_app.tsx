@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Welcome to webapp!</title>
+        <title>Unofficial AoC solutions</title>
       </Head>
       <GlobalStyles />
       <Header />

@@ -67,6 +67,7 @@ export function GlobalStyles() {
             }
 
             body {
+              line-height: inherit;
               background: #0f0f23;
               margin: 8px;
               padding: 0;

@@ -1,20 +1,8 @@
-import styled from '@emotion/styled';
-
-const StyledPage = styled.div`
-  .page {
-  }
-`;
-
 export function Index() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.@emotion/styled file.
-   */
   return (
-    <StyledPage>
-      kacsa
-    </StyledPage>
+    <div>
+      Click on a day on the left to see the puzzles and one of its possible solution.
+    </div>
   );
 }
 

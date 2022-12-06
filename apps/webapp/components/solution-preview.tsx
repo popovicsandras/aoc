@@ -12,7 +12,21 @@ export function SolutionPreview({code, puzzle}: {code: string; puzzle: string}) 
       <h1 css={css({marginBottom: 16})}>
           Puzzle
         </h1>
-        <article>
+        <article css={css({
+          '&': {
+            'li:before': {
+              content: '"-"',
+              position: 'absolute',
+              left: 0,
+              top: 0
+            },
+
+            'li': {
+              paddingLeft: 42,
+              position: 'relative'
+            }
+          }
+        })}>
           <div dangerouslySetInnerHTML={{__html: puzzle}} />
         </article>
       </aside>
