@@ -1,20 +1,19 @@
-import { SolutionPreview } from '../../components/solution-preview';
+import Head from 'next/head';
 import { existsSync, readFileSync  } from "fs";
 import { resolve } from 'path';
 import { useRouter } from 'next/router'
-
-import Head from 'next/head';
+import ContentOfTheDay from '../../components/content-of-the-day';
 
 export default function DayComponent({main, code, puzzle}: {main: string; code: string; puzzle: string}) {
   const router = useRouter();
-  const day = router.query.day;
+  const day = router.query.day as string;
 
   return (
     <>
       <Head>
         <title>Unofficial AoC solutions {`${day}/25`}</title>
       </Head>
-      <SolutionPreview main={main} code={code} puzzle={puzzle} />
+      <ContentOfTheDay key={day} main={main} code={code} puzzle={puzzle}/>
     </>
   );
 }
