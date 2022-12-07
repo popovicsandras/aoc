@@ -1,11 +1,11 @@
 import { SolutionPreview } from '../../components/solution-preview';
-import { readFileSync  } from "fs";
+import { existsSync, readFileSync  } from "fs";
 import { resolve } from 'path';
 import { useRouter } from 'next/router'
 
 import Head from 'next/head';
 
-export default function DayComponent({code, puzzle}: {code: string; puzzle: string}) {
+export default function DayComponent({main, code, puzzle}: {main: string; code: string; puzzle: string}) {
   const router = useRouter();
   const day = router.query.day;
 
@@ -14,7 +14,7 @@ export default function DayComponent({code, puzzle}: {code: string; puzzle: stri
       <Head>
         <title>Unofficial AoC solutions {`${day}/25`}</title>
       </Head>
-      <SolutionPreview code={code} puzzle={puzzle} />
+      <SolutionPreview main={main} code={code} puzzle={puzzle} />
     </>
   );
 }
@@ -30,11 +30,15 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const day = context.params.day;
-    const code = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/index.ts`), {encoding:'utf8', flag:'r'});
+    const main = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/index.ts`), {encoding:'utf8', flag:'r'});
+    let code = null;
+    if (existsSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/process.ts`))) {
+      code = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/process.ts`), {encoding:'utf8', flag:'r'});
+    }
     const puzzle = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/puzzle.html`), {encoding:'utf8', flag:'r'});
 
     return {
-      props: { code, puzzle },
+      props: { main, code, puzzle },
     };
   } catch {
     return {

@@ -3,8 +3,9 @@ import Prism from 'prismjs';
 import 'prismjs/themes/prism-okaidia.css';
 
 
-export function SolutionPreview({code, puzzle}: {code: string; puzzle: string}) {
-  const __codeHtml: string = Prism.highlight(code, Prism.languages.javascript, 'javascript');
+export function SolutionPreview({main, code, puzzle}: {main: string; code: string; puzzle: string}) {
+  const __mainHtml: string = Prism.highlight(main, Prism.languages.javascript, 'javascript');
+  const __codeHtml: string = code ? Prism.highlight(code, Prism.languages.javascript, 'javascript') : '';
 
   return (
     <>
@@ -41,8 +42,17 @@ export function SolutionPreview({code, puzzle}: {code: string; puzzle: string}) 
             }
           }
         })}>
-          <pre>
+          {code && <><pre>
             <code dangerouslySetInnerHTML={{__html: __codeHtml}} />
+            </pre>
+            <br />
+            ------------------------------------------------------------------
+            <br />
+            <br />
+            </>
+          }
+          <pre>
+            <code dangerouslySetInnerHTML={{__html: __mainHtml}} />
           </pre>
         </article>
       </main>
