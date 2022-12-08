@@ -4,8 +4,7 @@ import readLinesFromFile from '../utils/file-reader';
 import { readLinesFromString } from '../utils/string-reader';
 import { process } from './process';
 
-const main = async () => {
-  const debugData = `$ cd /
+const debugData = `$ cd /
 $ ls
 dir a
 14848514 b.txt
@@ -29,6 +28,7 @@ $ ls
 5626152 d.ext
 7214296 k`;
 
+const main = async () => {
   const stringReader = readLinesFromString(debugData);
   const answer0 = await process(stringReader, 1);
   console.log(answer0);
