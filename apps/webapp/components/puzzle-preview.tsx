@@ -5,6 +5,7 @@ export function PuzzlePreview({puzzle}: {puzzle: string}) {
   return (
     <article css={css({
       '&': {
+        paddingLeft: 16,
         'li:before': {
           content: '"-"',
           position: 'absolute',

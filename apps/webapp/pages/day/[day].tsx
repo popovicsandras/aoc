@@ -1,10 +1,11 @@
 import Head from 'next/head';
-import { existsSync, readFileSync  } from "fs";
+import { readdirSync, readFileSync  } from "fs";
 import { resolve } from 'path';
 import { useRouter } from 'next/router'
 import ContentOfTheDay from '../../components/content-of-the-day';
+import { type CodeContainer } from '../../components/solution-preview';
 
-export default function DayComponent({main, code, puzzle}: {main: string; code: string; puzzle: string}) {
+export default function DayComponent({code, puzzle}: {code: CodeContainer; puzzle: string}) {
   const router = useRouter();
   const day = router.query.day as string;
 
@@ -13,7 +14,7 @@ export default function DayComponent({main, code, puzzle}: {main: string; code: 
       <Head>
         <title>Unofficial AoC solutions {`${day}/25`}</title>
       </Head>
-      <ContentOfTheDay key={day} main={main} code={code} puzzle={puzzle}/>
+      <ContentOfTheDay key={day} code={code} puzzle={puzzle}/>
     </>
   );
 }
@@ -29,15 +30,22 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const day = context.params.day;
-    const main = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/index.ts`), {encoding:'utf8', flag:'r'});
-    let code = null;
-    if (existsSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/process.ts`))) {
-      code = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/process.ts`), {encoding:'utf8', flag:'r'});
-    }
-    const puzzle = readFileSync(resolve(process.cwd(), `packages/2022/src/lib/day-${day}/puzzle.html`), {encoding:'utf8', flag:'r'});
+    const year = 2022;
+
+    const fileNames = readdirSync(resolve(process.cwd(), `packages/${year}/src/lib/day-${day}`));
+    const code = fileNames
+      .filter(filename => /\.ts$/.test(filename))
+      .reduce((acc, filename: string) => {
+        return {
+          ...acc,
+          [filename]: readFileSync(resolve(process.cwd(), `packages/${year}/src/lib/day-${day}/${filename}`), {encoding:'utf8', flag:'r'})
+        };
+      }, {});
+
+    const puzzle = readFileSync(resolve(process.cwd(), `packages/${year}/src/lib/day-${day}/puzzle.html`), {encoding:'utf8', flag:'r'});
 
     return {
-      props: { main, code, puzzle },
+      props: { code, puzzle },
     };
   } catch {
     return {

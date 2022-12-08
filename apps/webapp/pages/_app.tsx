@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <GlobalStyles />
       <Header />
-      <div css={css({display: 'flex', gap: '16px', minHeight: 'calc(100% - 38px)'})}>
+      <div css={css({display: 'flex', minHeight: 'calc(100% - 38px)'})}>
         <Navigation />
         <Component {...pageProps} />
       </div>
