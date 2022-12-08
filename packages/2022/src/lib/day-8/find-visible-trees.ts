@@ -9,10 +9,11 @@ export async function findVisibleTrees(data: string): Promise<number> {
     }
 
     const currentElement = grid[i][j];
+    const findMax = (max: number, item: number) => item > max ? item : max;
 
     const maxFromLeft = grid[i]
       .slice(0, j)
-      .reduce((max, item) => item > max ? item : max, 0);
+      .reduce(findMax, 0);
 
     if (maxFromLeft < currentElement) {
       return true;
@@ -20,7 +21,7 @@ export async function findVisibleTrees(data: string): Promise<number> {
 
     const maxFromRight = grid[i]
       .slice(j+1, Infinity)
-      .reduce((max, item) => item > max ? item : max, 0);
+      .reduce(findMax, 0);
 
     if (maxFromRight < currentElement) {
       return true;
@@ -28,7 +29,7 @@ export async function findVisibleTrees(data: string): Promise<number> {
 
     const maxFromTop = [...Array(i).keys()]
       .map((index) => grid[index][j])
-      .reduce((max, item) => item > max ? item : max, 0);
+      .reduce(findMax, 0);
 
     if (maxFromTop < currentElement) {
       return true;
@@ -36,7 +37,7 @@ export async function findVisibleTrees(data: string): Promise<number> {
 
     const maxFromBottom = [...Array(grid.length - i - 1).keys()]
       .map((index) => grid[index + i + 1][j])
-      .reduce((max, item) => item > max ? item : max, 0);
+      .reduce(findMax, 0);
 
     if (maxFromBottom < currentElement) {
       return true;
