@@ -14,5 +14,10 @@ export function calculateTailPosition(head: Position, tail: Position): Position 
     y = tail.y + (head.y - tail.y) / 2;
   }
 
+  if (Math.abs(head.x - tail.x) === 2 && Math.abs(head.y - tail.y) === 2) {
+    x = tail.x + (head.x - tail.x) / 2;
+    y = tail.y + (head.y - tail.y) / 2;
+  }
+
   return { x, y };
 }

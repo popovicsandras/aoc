@@ -154,6 +154,21 @@ describe('Tail position calculator', () => {
           --------
            0 1 2 3`
     ],
+    [
+      'tail catches up for "BIG JUMP"s as well',
+      `3 | • • • •
+       2 | • • H •
+       1 | • • • •
+       0 | T • • •
+          --------
+           0 1 2 3`,
+      `3 | • • • •
+       2 | • • H •
+       1 | • T • •
+       0 | • • • •
+          --------
+           0 1 2 3`
+    ],
   ];
 
   cases.forEach(([testCase, init, expected]) => {
