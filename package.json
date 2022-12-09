@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node ./packages/2022/src/lib/day-${DAY:-1}/index.ts",
     "serve": "nx serve",
+    "test": "nx test",
     "export": "nx export",
     "build": "nx build"
   },
