@@ -16,6 +16,10 @@ export function PuzzlePreview({puzzle}: {puzzle: string}) {
         'li': {
           paddingLeft: 42,
           position: 'relative'
+        },
+
+        code: {
+          padding: 12
         }
       }
     })}>
