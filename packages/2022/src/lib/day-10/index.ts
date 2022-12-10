@@ -155,14 +155,14 @@ const main = async () => {
   const stringReader = readLinesFromString(debugData);
   const answer0 = await process(stringReader);
   console.log(answer0);
-  // assert(95437 === answer0);
+  assert(13140 === answer0);
 
-  // const fileName = resolve(__dirname, 'input.txt');
+  const fileName = resolve(__dirname, 'input.txt');
 
-  // let fileReader = readLinesFromFile(fileName);
-  // const answer1 = await process(fileReader);
-  // console.log(answer1);
-  // assert(71124 === answer1);
+  let fileReader = readLinesFromFile(fileName);
+  const answer1 = await process(fileReader);
+  console.log(answer1);
+  assert(12520 === answer1);
 
   // fileReader = readLinesFromFile(fileName);
   // const answer2 = await process(fileReader, 3);

@@ -7,10 +7,7 @@ export function PuzzlePreview({puzzle}: {puzzle: string}) {
       '&': {
         paddingLeft: 16,
         'li:before': {
-          content: '"-"',
-          position: 'absolute',
-          left: 0,
-          top: 0
+          content: '"-"'
         },
 
         'li': {
