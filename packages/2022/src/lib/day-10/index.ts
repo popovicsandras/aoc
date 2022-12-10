@@ -153,21 +153,31 @@ noop`;
 
 const main = async () => {
   const stringReader = readLinesFromString(debugData);
-  const answer0 = await process(stringReader);
-  console.log(answer0);
-  assert(13140 === answer0);
+  const [answer0a, answer0b] = await process(stringReader);
+  console.log(answer0a);
+  console.log(answer0b.slice(0, 21));
+  assert(13140 === answer0a);
+  assert('##..##..##..##..##..#' === answer0b.slice(0, 21));
 
   const fileName = resolve(__dirname, 'input.txt');
 
   let fileReader = readLinesFromFile(fileName);
-  const answer1 = await process(fileReader);
+  const [answer1, answer2] = await process(fileReader);
   console.log(answer1);
+  console.log(answer2.slice(0,40));
+  console.log(answer2.slice(40,80));
+  console.log(answer2.slice(80, 120));
+  console.log(answer2.slice(120, 160));
+  console.log(answer2.slice(160, 200));
+  console.log(answer2.slice(200, 240));
   assert(12520 === answer1);
-
-  // fileReader = readLinesFromFile(fileName);
-  // const answer2 = await process(fileReader, 3);
-  // console.log(answer2);
-  // assert(204639 === answer2);
+  assert(
+  '####.#..#.###..####.###....##..##..#....' +
+  '#....#..#.#..#....#.#..#....#.#..#.#....' +
+  '###..####.#..#...#..#..#....#.#....#....' +
+  '#....#..#.###...#...###.....#.#.##.#....' +
+  '#....#..#.#....#....#....#..#.#..#.#....' +
+  '####.#..#.#....####.#.....##...###.####.' === answer2);
 }
 
 main();
