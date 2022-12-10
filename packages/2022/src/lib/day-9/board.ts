@@ -9,7 +9,7 @@ const directionMap = {
 
 export class Board {
   private knots: Position[];
-  private tailFootprint: {[key: string]: boolean};
+  private tailFootprint: Set<string>;
 
   private get head(): Position {
     return this.knots[0];
@@ -21,7 +21,7 @@ export class Board {
 
   constructor(knots: number) {
     this.knots = [...Array(knots)].map(() => ({x: 0, y: 0}));
-    this.tailFootprint = {};
+    this.tailFootprint = new Set();
     this.recordTailFootprint();
   }
 
@@ -42,10 +42,10 @@ export class Board {
   }
 
   recordTailFootprint(): void {
-    this.tailFootprint[`${this.tail.x}-${this.tail.y}`] = true;
+    this.tailFootprint.add(`${this.tail.x}-${this.tail.y}`);
   }
 
   getTailFootprint(): number {
-    return Object.keys(this.tailFootprint).length;
+    return this.tailFootprint.size;
   }
 }
