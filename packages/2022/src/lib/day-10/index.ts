@@ -2,7 +2,7 @@ import assert = require('assert');
 import { resolve } from 'path';
 import readLinesFromFile from '../utils/file-reader';
 import { readLinesFromString } from '../utils/string-reader';
-import { process } from './process';
+import { calculate, display } from './process';
 
 const debugData = `addx 15
 addx -11
@@ -153,7 +153,7 @@ noop`;
 
 const main = async () => {
   const stringReader = readLinesFromString(debugData);
-  const [answer0a, answer0b] = await process(stringReader);
+  const [answer0a, answer0b] = await calculate(stringReader);
   console.log(answer0a);
   console.log(answer0b.slice(0, 21));
   assert(13140 === answer0a);
@@ -162,14 +162,8 @@ const main = async () => {
   const fileName = resolve(__dirname, 'input.txt');
 
   let fileReader = readLinesFromFile(fileName);
-  const [answer1, answer2] = await process(fileReader);
+  const [answer1, answer2] = await calculate(fileReader);
   console.log(answer1);
-  console.log(answer2.slice(0,40));
-  console.log(answer2.slice(40,80));
-  console.log(answer2.slice(80, 120));
-  console.log(answer2.slice(120, 160));
-  console.log(answer2.slice(160, 200));
-  console.log(answer2.slice(200, 240));
   assert(12520 === answer1);
   assert(
   '####.#..#.###..####.###....##..##..#....' +
@@ -178,6 +172,10 @@ const main = async () => {
   '#....#..#.###...#...###.....#.#.##.#....' +
   '#....#..#.#....#....#....#..#.#..#.#....' +
   '####.#..#.#....####.#.....##...###.####.' === answer2);
+
+  console.log('------------------------------------------')
+  fileReader = readLinesFromFile(fileName);
+  await display(fileReader);
 }
 
 main();
