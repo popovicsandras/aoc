@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node ./packages/2022/src/lib/day-${DAY:-1}/index.ts",
+    "watch": "nodemon -e ts,json,txt -w ./packages/2022/src/lib/day-${DAY:-1} -x npm start",
     "serve": "nx serve",
     "test": "nx test",
     "export": "nx export",
@@ -19,6 +20,7 @@
     "core-js": "^3.6.5",
     "emotion-reset": "^3.0.1",
     "next": "13.0.0",
+    "nodemon": "^2.0.20",
     "prismjs": "^1.29.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
