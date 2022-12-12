@@ -4,11 +4,13 @@ import { Monkey } from "./monkey";
 export class Game {
   monkeys: { [key: string]: Monkey };
   parser: GameInputParser;
+  modulo: number;
 
   constructor(input: string, private verbose = false) {
     this.parser = new GameInputParser(input);
-    this.monkeys = this.parser.parse().reduce((acc, monkey) => ({...acc, [monkey.id]: monkey}), {});
-    // console.log(JSON.stringify(this.monkeys, null, 2));
+    const [monkeys, modulo] = this.parser.parse();
+    this.monkeys = monkeys.reduce((acc, monkey) => ({...acc, [monkey.id]: monkey}), {});
+    this.modulo = modulo * 3;
   }
 
   async run(rounds = 20) {
@@ -16,8 +18,7 @@ export class Game {
 
     for (let round = 0; round < rounds; round++) {
       for (const monkeyId of monkeyIds) {
-        for (const [target, newWorrinessLevel] of this.monkeys[monkeyId].inspect()) {
-          // console.log(target, newWorrinessLevel);
+        for (const [target, newWorrinessLevel] of this.monkeys[monkeyId].inspect(this.modulo)) {
           this.monkeys[target].addItems(newWorrinessLevel);
         }
       }
@@ -36,7 +37,6 @@ export class Game {
       .map(monkeyId => this.monkeys[monkeyId])
       .map(monkey => monkey.inspectionCounter)
       .sort((a: number, b: number) => b-a);
-
     return inspectionCountsByMonkeys[0] * inspectionCountsByMonkeys[1];
   }
 }

@@ -35,13 +35,18 @@ const main = async () => {
   const game0 = new Game(debugData);
   const answer0 = await game0.run();
   console.log(answer0);
-  assert(10605 === answer0);
+  assert(10197 === answer0);
+
+  const game0b = new Game(debugData);
+  const answer0b = await game0b.run(10000);
+  console.log(answer0b);
+  assert(2713310158 === answer0b);
 
   const fileContent = readFileSync(resolve(__dirname, 'input.txt'), { encoding: 'utf8'}).trim();
   const game1 = new Game(fileContent);
-  const answer1 = await game1.run();
+  const answer1 = await game1.run(10000);
   console.log(answer1);
-  assert(78678 === answer1);
+  assert(15333249714 === answer1);
 }
 
 main();

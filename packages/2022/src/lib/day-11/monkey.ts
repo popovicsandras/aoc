@@ -15,10 +15,10 @@ export class Monkey {
     this._items = [];
   }
 
-  public *inspect(): Generator<[number, number], void, unknown>  {
+  public *inspect(modulo: number = Infinity): Generator<[number, number], void, unknown>  {
     for (let worrinessLevel of this._items) {
       this._inspectionCounter++;
-      const newWorrinessLevel = Math.floor(this._operation(worrinessLevel) / 3);
+      const newWorrinessLevel = Math.floor(this._operation(worrinessLevel) % modulo);
       const target = this._targetCalculator(newWorrinessLevel);
       yield [target, newWorrinessLevel];
     }

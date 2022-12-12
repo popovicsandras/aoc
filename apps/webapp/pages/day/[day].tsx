@@ -12,7 +12,7 @@ export default function DayComponent({code, puzzle}: {code: CodeContainer; puzzl
   return (
     <>
       <Head>
-        <title>Unofficial AoC solutions {`${day}/25`}</title>
+        <title>{`Unofficial AoC solutions ${day}/25`}</title>
       </Head>
       <ContentOfTheDay key={day} code={code} puzzle={puzzle}/>
     </>

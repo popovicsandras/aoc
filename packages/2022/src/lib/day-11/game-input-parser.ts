@@ -15,9 +15,10 @@ export class GameInputParser {
 
   constructor(private input: string) { }
 
-  parse(): Monkey[] {
+  parse(): [Monkey[], number] {
 
     const inputLines = this.input.split('\n');
+    let modulo = 1;
 
     let index = 0;
     while (inputLines[index] !== undefined) {
@@ -31,7 +32,9 @@ export class GameInputParser {
       } else if (OPERATION.test(line)) {
         this.monkeys[this.monkeyCursor].operation = this.extractOperation(line);
       } else if (THROW_TARGET_PREDICATE.test(line)) {
-        this.monkeys[this.monkeyCursor].targetCalculator = this.extractTargetCalculator(line, inputLines, index);
+        const [divisibleBy, targetCalculator] = this.extractTargetCalculator(line, inputLines, index);
+        modulo *= divisibleBy;
+        this.monkeys[this.monkeyCursor].targetCalculator = targetCalculator;
         increment = 3;
       } else if (line.trim() === '') {
         this.monkeyCursor++;
@@ -40,15 +43,15 @@ export class GameInputParser {
       index += increment;
     }
 
-    return this.monkeys;
+    return [this.monkeys, modulo];
   }
 
-  private extractTargetCalculator(line: string, inputLines: string[], index: number) {
+  private extractTargetCalculator(line: string, inputLines: string[], index: number): [number, NumericFunctionType] {
     const divisibleBy = parseInt(line.match(THROW_TARGET_PREDICATE)?.[1] ?? '', 10);
     const trueTarget = parseInt(inputLines[index + 1].match(THROW_TARGET_IF_TRUE)?.[1] ?? '', 10);
     const falseTarget = parseInt(inputLines[index + 2].match(THROW_TARGET_IF_FALSE)?.[1] ?? '', 10);
 
-    return (worrinessLevel: number) => worrinessLevel % divisibleBy === 0 ? trueTarget : falseTarget;
+    return [divisibleBy, (worrinessLevel: number) => worrinessLevel % divisibleBy === 0 ? trueTarget : falseTarget];
   }
 
   private extractMonkeyId(line: string) {
