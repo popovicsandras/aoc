@@ -39,6 +39,10 @@ export class Graph {
     return new Set(this.nodes);
   }
 
+  getNodesWithHeight(height: number): Node[] {
+    return this.nodes.filter(node => node.height === height);
+  }
+
   private getAccessibleNeighbours(node: Node): Node[] {
     const everyNeighbour: [number, number][] = [
                           [node.x, node.y - 1],

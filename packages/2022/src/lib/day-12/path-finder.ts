@@ -7,21 +7,28 @@ interface PathInfo {
 }
 
 export class PathFinder {
-  private visited: Set<Node> = new Set();
-  private unvisited: Set<Node>;
-  private distanceMap: Map<Node, PathInfo> = new Map();
+  private visited!: Set<Node>;
+  private unvisited!: Set<Node>;
+  private distanceMap!: Map<Node, PathInfo>;
 
-  constructor(graph: Graph) {
-    this.unvisited = graph.getNodes();
+  constructor(private graph: Graph) {}
+
+  init(startNode: Node) {
+    this.visited = new Set();
+    this.distanceMap = new Map();
+    this.unvisited = this.graph.getNodes();
+
     this.unvisited.forEach(node => {
       this.distanceMap.set(node, {
-        distance: node === graph.startNode ? 0 : Infinity,
+        distance: node === startNode ? 0 : Infinity,
         previous: null
       });
     });
   }
 
-  traverse(): void {
+  traverse(startNode: Node, endNode: Node):number {
+    this.init(startNode);
+
     let currentNode = this.getLowestDistanceNode();
     while (this.unvisited.size > 0 && currentNode !== undefined) {
       const neighbours = currentNode.getNeightBours().filter(neighbourNode => !this.visited.has(neighbourNode));
@@ -37,6 +44,8 @@ export class PathFinder {
       this.visited.add(currentNode);
       currentNode = this.getLowestDistanceNode();
     }
+
+    return this.distanceMap.get(endNode)!.distance;
   }
 
   private getDistanceOf(node: Node): number {
@@ -63,9 +72,5 @@ export class PathFinder {
     });
 
     return lowestDistanceNode!;
-  }
-
-  getShortestDistanceTo(node: Node): number {
-    return this.distanceMap.get(node)!.distance;
   }
 }

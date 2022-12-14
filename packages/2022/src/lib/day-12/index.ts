@@ -18,10 +18,15 @@ const main = async () => {
   assert(answer0 === 31);
 
   const fileContent = readFileSync(resolve(__dirname, 'input.txt'), { encoding: 'utf8'}).trim();
+
   const map1 = new TerrainMap(fileContent);
   const answer1 = map1.getShortestDistance();
   console.log(answer1);
   assert(answer1 === 391);
+
+  const answer2 = map1.getShortestDistanceFromGroundLevel();
+  console.log(answer2);
+  assert(answer2 === 386);
 }
 
 main();

@@ -11,7 +11,13 @@ export class TerrainMap {
   }
 
   getShortestDistance() {
-    this.pathFinder.traverse();
-    return this.pathFinder.getShortestDistanceTo(this.graph.endNode);
+    return this.pathFinder.traverse(this.graph.startNode, this.graph.endNode);
+  }
+
+  getShortestDistanceFromGroundLevel() {
+    const groundLevelNodes = this.graph.getNodesWithHeight(0);
+
+    const routesFromGround = groundLevelNodes.map(node => this.pathFinder.traverse(node, this.graph.endNode)).sort()
+    return routesFromGround[0];
   }
 }
