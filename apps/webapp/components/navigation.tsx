@@ -5,19 +5,19 @@ export function Navigation() {
   return (
     <nav role="navigation" css={css({ flex: '0 0 auto', borderRight: '1px solid #009900', paddingRight: 16, minHeight: '100%' })}>
       <ul>
-        {[...Array(25)].map((_value, index) => {
+        {[...Array(26)].map((_value, index) => {
           const isActive = true;
           return (
-            <li key={`day-${index+1}`}>
+            <li key={`day-${index}`}>
               <Link
-                href={isActive ? `/day/${index + 1}` : '#'}
+                href={isActive ? `/day/${index}` : '#'}
                 css={css({
                   ...(!isActive ? {
                     pointerEvents: 'none',
                     color: '#DBCCCC !important'
                   } : {})
                 })}>
-                [Day {index + 1}]
+                [Day {index}]
               </Link>
             </li>
           );

@@ -20,7 +20,7 @@ export default function DayComponent({code, puzzle}: {code: CodeContainer; puzzl
 }
 
 export async function getStaticPaths() {
-  const paths = [...Array(25)].map((_value, day) => ({ params: { day: `${day + 1}` } }))
+  const paths = [...Array(26)].map((_value, day) => ({ params: { day: `${day}` } }))
   return {
     paths,
     fallback: false
