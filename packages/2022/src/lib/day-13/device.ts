@@ -7,7 +7,7 @@ export class Device {
       .split('\n\n')
       .map(pair => pair
         .split('\n')
-        .map(eval) as [Signal[], Signal[]]
+        .map(v => JSON.parse(v)) as [Signal[], Signal[]]
       );
   }
 
@@ -19,7 +19,7 @@ export class Device {
     return Array.isArray(s) ? s : [s];
   }
 
-  compare(a: Signal, b: Signal, padding: string): number {
+  compare(a: Signal, b: Signal, padding = ''): number {
     if (Number.isInteger(a) && Number.isInteger(b)) {
       this.log(`${padding}- Compare `, a, `vs`, b);
       if (a < b) return 1;
@@ -58,5 +58,18 @@ export class Device {
 
       return acc;
     }, 0);
+  }
+
+  orderPackets() {
+    const divider1 = [[2]];
+    const divider2 = [[6]];
+
+    const result = this.pairs
+      .flat(1)
+      .concat([divider1, divider2])
+      .sort(this.compare.bind(this))
+      .reverse();
+
+    return (result.indexOf(divider1) + 1) * (result.indexOf(divider2) + 1);
   }
 }
