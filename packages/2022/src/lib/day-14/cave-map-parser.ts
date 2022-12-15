@@ -1,17 +1,6 @@
 import { CaveMap } from "./cave-map";
+import { CaveMapPoint, CaveMapPointType } from "./cave-map-point";
 
-interface Coordinates { x: number; y: number; }
-
-export enum MapObjectType {
-  SandSource = '+',
-  Rock = '#',
-  Sand = 'o',
-  Air = '.'
-}
-export interface MapObject {
-  type: MapObjectType;
-  coordinates: Coordinates;
-}
 export class CaveMapParser {
   private left: number = Infinity;
   private right: number = -Infinity;
@@ -20,23 +9,23 @@ export class CaveMapParser {
 
   parse(input: string, x?: number, y?: number) {
 
-    let mapPoints: MapObject[] = [];
+    let mapPoints: CaveMapPoint[] = [];
 
     if (Number.isInteger(x) && Number.isInteger(y)) {
       [`${x},${y} -> ${x},${y}`].forEach(objectStr => {
-        mapPoints = mapPoints.concat(this.parseLine(objectStr, MapObjectType.SandSource));
+        mapPoints = mapPoints.concat(this.parseLine(objectStr, CaveMapPointType.SandSource));
       });
     }
 
     input.split('\n').forEach(objectStr => {
-      mapPoints = mapPoints.concat(this.parseLine(objectStr, MapObjectType.Rock));
+      mapPoints = mapPoints.concat(this.parseLine(objectStr, CaveMapPointType.Rock));
     });
 
     return new CaveMap(mapPoints, this.left, this.top, this.bottom, this.right);
   }
 
-  private parseLine(objectStr: string, type: MapObjectType) {
-    const mapPointsForLine: MapObject[] = [];
+  private parseLine(objectStr: string, type: CaveMapPointType) {
+    const mapPointsForLine: CaveMapPoint[] = [];
     const boundaries = objectStr.split(' -> ');
     for (let i = 0; i < boundaries.length - 1; i++) {
       const [fromX, fromY] = boundaries[i].split(',').map(numStr => parseInt(numStr, 10));
@@ -49,13 +38,8 @@ export class CaveMapParser {
           this.bottom = Math.max(this.bottom, y);
           this.left = Math.min(this.left, fromX);
           this.right = Math.max(this.right, fromX);
-          mapPointsForLine.push({
-            type,
-            coordinates: {
-              x: fromX,
-              y
-            }
-          });
+
+          mapPointsForLine.push(new CaveMapPoint(fromX, y, type));
         }
       }
 
@@ -66,13 +50,7 @@ export class CaveMapParser {
           this.bottom = Math.max(this.bottom, fromY);
           this.left = Math.min(this.left, x);
           this.right = Math.max(this.right, x);
-          mapPointsForLine.push({
-            type,
-            coordinates: {
-              x,
-              y: fromY
-            }
-          });
+          mapPointsForLine.push(new CaveMapPoint(x, fromY, type));
         }
       }
     }

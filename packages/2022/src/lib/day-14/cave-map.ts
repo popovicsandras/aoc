@@ -1,49 +1,48 @@
-import { CaveMapParser, MapObject, MapObjectType } from "./cave-map-parser";
+import { CaveMapPoint, CaveMapPointType } from "./cave-map-point";
 
 export class CaveMap {
-  private objects: Map<string, MapObject>;
-
-  static parseFrom(input: string, x?: number, y?: number): CaveMap {
-    const caveMapParser = new CaveMapParser();
-    return caveMapParser.parse(input, x, y);
-  }
+  private objects: Map<string, CaveMapPoint>;
 
   constructor(
-    mapPoints: MapObject[],
+    mapPoints: CaveMapPoint[],
     private _left: number = -Infinity,
     private _top: number = -Infinity,
     private _bottom: number = Infinity,
     private _right: number = Infinity
   ) {
-    this.objects = new Map<string, MapObject>();
+    this.objects = new Map<string, CaveMapPoint>();
     mapPoints.forEach(point => {
       this.set(
-        point.coordinates.x,
-        point.coordinates.y,
-        point
+        point.x,
+        point.y,
+        point.type
       );
     })
   }
 
-  get(x: number, y: number): MapObject | undefined {
+  clone(): CaveMap {
+    return new CaveMap([...this.objects.values()], this.left, this.top, this.bottom, this.right);
+  }
+
+  get(x: number, y: number): CaveMapPoint | undefined {
     return this.objects.get(this.getKey(x, y));
   }
 
-  set(x: number, y: number, obj: MapObject): void {
-    this.objects.set(this.getKey(x, y), obj);
+  set(x: number, y: number, type: CaveMapPointType): void {
+    this.objects.set(this.getKey(x, y), new CaveMapPoint(x, y, type));
   }
 
   has(x: number, y: number): boolean {
     return this.objects.has(this.getKey(x, y));
   }
 
-  display(x: number, y: number): MapObjectType {
+  display(x: number, y: number): CaveMapPointType {
     const dataPoint = this.objects.get(this.getKey(x, y));
     if (dataPoint) {
       return dataPoint.type;
     }
 
-    return MapObjectType.Air;
+    return CaveMapPointType.Air;
   }
 
   get size(): number {

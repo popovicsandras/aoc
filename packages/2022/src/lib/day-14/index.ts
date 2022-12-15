@@ -6,12 +6,12 @@ import { Game } from './game';
 let debugData = `498,4 -> 498,6 -> 496,6
 503,4 -> 502,4 -> 502,9 -> 494,9`;
 
-const main = () => {
+const main = async () => {
   const fileContent = readFileSync(resolve(__dirname, 'input.txt'), { encoding: 'utf8'}).trim();
 
   const map0 = new Game(debugData);
-  const answer0 = map0.run();
-  console.log('answer0: ', answer0);
+  await map0.run();
+  // console.log('answer0: ', answer0);
   // assert(13 === answer0);
 }
 
