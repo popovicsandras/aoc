@@ -33,7 +33,7 @@ export class CaveMapDisplay {
     this.buffer.push(caveMap);
   }
 
-  start() {
+  start(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.renderingInterval = setInterval(() => {
         if (this.bufferIndex >= this.buffer.length) {
@@ -51,7 +51,7 @@ export class CaveMapDisplay {
         this.render(caveMap, cursorPosition);
         this.renderedAlready = true;
         this.bufferIndex++;
-      }, 300);
+      }, 10);
     });
   }
 

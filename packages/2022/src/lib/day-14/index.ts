@@ -12,7 +12,12 @@ const main = async () => {
   const map0 = new Game(debugData);
   await map0.run();
   // console.log('answer0: ', answer0);
-  // assert(13 === answer0);
+  // assert(24 === answer0);
+
+  const map1 = new Game(fileContent);
+  await map1.run();
+  // console.log('answer0: ', answer1);
+
 }
 
 main();
