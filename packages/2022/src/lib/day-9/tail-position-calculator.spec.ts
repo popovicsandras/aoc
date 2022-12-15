@@ -218,7 +218,6 @@ describe('Tail position calculator', () => {
 
     const [head, tail] = getPositions(init);
     const [_expectedHead, expectedTail] = getPositions(expected);
-    console.log(head, tail)
 
     const newPosition = calculateTailPosition(head, tail);
     expect(newPosition).toEqual(expectedTail);

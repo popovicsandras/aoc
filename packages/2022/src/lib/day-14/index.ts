@@ -9,7 +9,7 @@ let debugData = `498,4 -> 498,6 -> 496,6
 const main = () => {
   const fileContent = readFileSync(resolve(__dirname, 'input.txt'), { encoding: 'utf8'}).trim();
 
-  const map0 = new Game(debugData, false);
+  const map0 = new Game(debugData);
   const answer0 = map0.run();
   console.log('answer0: ', answer0);
   // assert(13 === answer0);
