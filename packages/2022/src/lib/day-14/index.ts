@@ -9,15 +9,17 @@ let debugData = `498,4 -> 498,6 -> 496,6
 const main = async () => {
   const fileContent = readFileSync(resolve(__dirname, 'input.txt'), { encoding: 'utf8'}).trim();
 
-  const map0 = new Game(debugData);
-  await map0.run();
-  // console.log('answer0: ', answer0);
-  // assert(24 === answer0);
+  const game0 = new Game(debugData);
+  await game0.run(false, true);
 
-  const map1 = new Game(fileContent);
-  await map1.run();
-  // console.log('answer0: ', answer1);
+  const game0b = new Game(debugData);
+  await game0b.run(true, true);
 
+  const game1 = new Game(fileContent);
+  await game1.run();
+
+  const game2 = new Game(fileContent);
+  await game2.run(true);
 }
 
 main();

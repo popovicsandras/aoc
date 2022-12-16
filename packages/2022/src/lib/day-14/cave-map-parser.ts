@@ -7,21 +7,18 @@ export class CaveMapParser {
   private top: number = Infinity;
   private bottom: number = -Infinity;
 
-  parse(input: string, x?: number, y?: number) {
+  parse(input: string, x: number, y: number) {
 
     let mapPoints: CaveMapPoint[] = [];
 
-    if (Number.isInteger(x) && Number.isInteger(y)) {
-      [`${x},${y} -> ${x},${y}`].forEach(objectStr => {
-        mapPoints = mapPoints.concat(this.parseLine(objectStr, CaveMapPointType.SandSource));
-      });
-    }
+    this.top = this.bottom = y;
+    this.left = this.right =  x;
 
     input.split('\n').forEach(objectStr => {
       mapPoints = mapPoints.concat(this.parseLine(objectStr, CaveMapPointType.Rock));
     });
 
-    return new CaveMap(mapPoints, this.left, this.top, this.bottom, this.right);
+    return new CaveMap(mapPoints, x, y, this.left, this.top, this.bottom, this.right);
   }
 
   private parseLine(objectStr: string, type: CaveMapPointType) {

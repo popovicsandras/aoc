@@ -7,6 +7,8 @@ export class CaveMap {
 
   constructor(
     mapPoints: CaveMapPoint[],
+    private sourceOfSandX: number,
+    private sourceOfSandY: number,
     private _left: number = -Infinity,
     private _top: number = -Infinity,
     private _bottom: number = Infinity,
@@ -23,7 +25,16 @@ export class CaveMap {
   }
 
   clone(stableGrainOfSand = false): CaveMap {
-    const map = new CaveMap([...this.objects.values()], this.left, this.top, this.bottom, this.right);
+    const map = new CaveMap(
+      [...this.objects.values()],
+      this.sourceOfSandX,
+      this.sourceOfSandY,
+      this.left,
+      this.top,
+      this.bottom,
+      this.right
+    );
+
     if (this.sandPositionX && this.sandPositionY) {
       if (stableGrainOfSand) {
         map.set(this.sandPositionX, this.sandPositionY, CaveMapPointType.Sand);
@@ -33,6 +44,16 @@ export class CaveMap {
     }
 
     return map;
+  }
+
+  addGroundFloor() {
+    for(let x = this.sourceOfSandX - this.height - 2; x <= this.sourceOfSandX + this.height + 2; x++) {
+      this.set(x, this._bottom + 2, CaveMapPointType.Rock);
+    }
+
+    this._left = this.sourceOfSandX - this.height - 3;
+    this._right = this.sourceOfSandX + this.height + 3;
+    this._bottom = this._bottom + 2;
   }
 
   addGrainOfSand(x: number, y: number) {
@@ -52,37 +73,38 @@ export class CaveMap {
     return this.objects.has(this.getKey(x, y));
   }
 
-  isFalling() {
+  isFalling(): {reachedSource: boolean; outIntOAbyss: boolean} {
     let x = this.sandPositionX!;
     let y = this.sandPositionY!;
 
-    let positionFound = false;
-    let unstable = true;
-    while (!positionFound && unstable) {
-      if (!this.has(x,y+1)) {
+    let stable = false;
+    let outIntOAbyss = false;
+    let reachedSource = false;
+
+    while (!stable && !outIntOAbyss && !reachedSource) {
+      if (!this.has(x, y+1)) {
         y++;
-        positionFound = true;
-      } else if (!this.has(x-1,y+1)) {
-        y++;
-        x--;
-        positionFound = true;
-      } else if (!this.has(x+1,y+1)) {
-        y++;
-        x++;
-        positionFound = true;
+      } else if (!this.has(x-1, y+1)) {
+        y++; x--;
+      } else if (!this.has(x+1, y+1)) {
+        y++; x++;
       } else {
-        unstable = false;
+        stable = true;
+      }
+
+      if (x === this.sourceOfSandX && y === this.sourceOfSandY) {
+        reachedSource = true;
       }
 
       if (x < this.left || x > this.right || y > this.bottom) {
-        throw new Error();
+        outIntOAbyss = true;
       }
     }
 
     this.sandPositionX = x;
     this.sandPositionY = y;
 
-    return unstable;
+    return {reachedSource, outIntOAbyss};
   }
 
   display(x: number, y: number): CaveMapPointType {
@@ -93,6 +115,10 @@ export class CaveMap {
 
     if (x === this.sandPositionX && y === this.sandPositionY) {
       return CaveMapPointType.Sand;
+    }
+
+    if (x === this.sourceOfSandX && y === this.sourceOfSandY) {
+      return CaveMapPointType.SandSource;
     }
 
     return CaveMapPointType.Air;

@@ -3,41 +3,48 @@ import { CaveMapDisplay } from './cave-map-display';
 import { CaveMapParser } from './cave-map-parser';
 
 export class Game {
-  stableMapState: CaveMap;
+  private caveMapParser: CaveMapParser;
 
-  constructor(input: string, private debug = false) {
-    const caveMapParser = new CaveMapParser();
-    this.stableMapState = caveMapParser.parse(input, 500, 0);
+  constructor(private input: string) {
+    this.caveMapParser = new CaveMapParser();
   }
 
-  run(show = false) {
+  run(finite = false, show = false) {
     let displayPromise: Promise<void> = Promise.resolve();
     let display: CaveMapDisplay;
+    let mapState = this.caveMapParser.parse(this.input, 500, 0);
+
+    if (finite) {
+      mapState.addGroundFloor();
+    }
+
     if (show) {
       display = new CaveMapDisplay();
       displayPromise = display.start();
-      display.addState(this.stableMapState);
+      display.addState(mapState);
     }
 
     let sandCount = 0;
+    let outIntOAbyss = false;
+    let reachedSource = false;
 
-    let unstableMapState = this.stableMapState.clone();
-    while (true) {
-      unstableMapState.addGrainOfSand(500, 0);
+    while (!outIntOAbyss && !reachedSource) {
+      mapState.addGrainOfSand(500, 0);
 
-      try {
-        while (unstableMapState.isFalling()) {
-          if (show) {
-            display!.addState(unstableMapState);
-            unstableMapState = unstableMapState.clone();
-          }
-        }
-      } catch {
-        console.log(sandCount);
-        break;
+      ({outIntOAbyss, reachedSource} = mapState.isFalling());
+      if (show) {
+        display!.addState(mapState);
       }
 
-      unstableMapState = unstableMapState.clone(true);
+      if (outIntOAbyss) {
+        console.log('out into abyss: ', sandCount);
+      }
+
+      if (reachedSource) {
+        console.log('reached source: ', sandCount+1);
+      }
+
+      mapState = mapState.clone(true);
       sandCount++;
     }
 
