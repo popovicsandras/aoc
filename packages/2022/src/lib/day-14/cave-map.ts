@@ -73,7 +73,7 @@ export class CaveMap {
     return this.objects.has(this.getKey(x, y));
   }
 
-  isFalling(): {reachedSource: boolean; outIntOAbyss: boolean} {
+  calculateGrainOfSandDestination(): {reachedSource: boolean; outIntOAbyss: boolean} {
     let x = this.sandPositionX!;
     let y = this.sandPositionY!;
 

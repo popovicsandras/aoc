@@ -1,53 +1,40 @@
-import { CaveMap } from './cave-map';
-import { CaveMapDisplay } from './cave-map-display';
 import { CaveMapParser } from './cave-map-parser';
+import { EventEmitter } from 'events';
 
-export class Game {
+export class Game extends EventEmitter {
   private caveMapParser: CaveMapParser;
 
   constructor(private input: string) {
+    super();
     this.caveMapParser = new CaveMapParser();
   }
 
-  run(finite = false, show = false) {
-    let displayPromise: Promise<void> = Promise.resolve();
-    let display: CaveMapDisplay;
-    let mapState = this.caveMapParser.parse(this.input, 500, 0);
-
-    if (finite) {
-      mapState.addGroundFloor();
-    }
-
-    if (show) {
-      display = new CaveMapDisplay();
-      displayPromise = display.start();
-      display.addState(mapState);
-    }
+  run(finite = false, sandSourceX = 500, sandSourceY = 0) {
+    let mapState = this.caveMapParser.parse(this.input, sandSourceX, sandSourceY);
+    if (finite) mapState.addGroundFloor();
+    this.emit('stateChange', mapState);
 
     let sandCount = 0;
     let outIntOAbyss = false;
     let reachedSource = false;
 
     while (!outIntOAbyss && !reachedSource) {
-      mapState.addGrainOfSand(500, 0);
-
-      ({outIntOAbyss, reachedSource} = mapState.isFalling());
-      if (show) {
-        display!.addState(mapState);
-      }
+      mapState.addGrainOfSand(sandSourceX, sandSourceY);
+      ({outIntOAbyss, reachedSource} = mapState.calculateGrainOfSandDestination());
+      mapState = mapState.clone(true);
+      this.emit('stateChange', mapState);
 
       if (outIntOAbyss) {
-        console.log('out into abyss: ', sandCount);
+        break;
       }
+
+      sandCount++;
 
       if (reachedSource) {
-        console.log('reached source: ', sandCount+1);
+        break;
       }
-
-      mapState = mapState.clone(true);
-      sandCount++;
     }
 
-    return displayPromise;
+    return sandCount;
   }
 }
