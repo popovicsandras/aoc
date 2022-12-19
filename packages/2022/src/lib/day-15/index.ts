@@ -27,9 +27,13 @@ const main = () => {
   assert(answer0a === 26);
 
 
-  // const answer1 = calculate(fileContent, 2000000);
-  // console.log(answer1);
-  // assert(answer1 === 5525847);
+  const answer1 = calculate(fileContent, 2000000);
+  console.log(answer1);
+  assert(answer1 === 5525847);
+
+  // const answer2 = calculate(fileContent, 0, 4000000, 0, 4000000);
+  // console.log(answer2);
+  // assert(answer1 === );
 }
 
 main();

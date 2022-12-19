@@ -2,8 +2,6 @@ import { parse } from "./parse";
 
 export function calculate(dataStr: string, y: number): number {
   const [top, right, bottom, left, parsedData] = parse(dataStr);
-  // console.log('left: ', left);
-  // console.log('right: ', right);
 
   const beacons = new Map<string, [number, number]>();
   parsedData.forEach(data => {
@@ -11,21 +9,18 @@ export function calculate(dataStr: string, y: number): number {
     beacons.set(`${Bx}-${By}`, data[0]);
   });
 
-  // console.log('Unique beacons count: ', beacons.size)
-
   let count = 0;
 
   for (let x = left; x <= right; x++) {
-    const [Px, Py] = [x, y];
+    const pointCoords = [x, y] as [number, number];
+
     for (let j = 0; j < parsedData.length; j++) {
       const data = parsedData[j];
-      const [Sx, Sy] = data[0];
-      const [Bx, By] = data[1];
-      const sensorRange = Math.abs(Sx-Bx) + Math.abs(Sy-By);
-      const distanceFromSensor = Math.abs(Sx-Px) + Math.abs(Sy-Py);
+      const sensorCoords = data[0];
+      const beaconCoords = data[1];
 
-      if (distanceFromSensor <= sensorRange) {
-        if (!beacons.has(`${Px}-${Py}`)) {
+      if (inRange(sensorCoords, beaconCoords, pointCoords)) {
+        if (!beacons.has(`${pointCoords[0]}-${pointCoords[1]}`)) {
           count++;
           break;
         }
@@ -34,6 +29,18 @@ export function calculate(dataStr: string, y: number): number {
   }
 
   return count;
+}
+
+function inRange(sensorCoords: [number, number], beaconCoords: [number, number], pointCoords: [number, number]): boolean {
+  const sensorRange = distance(sensorCoords, beaconCoords);
+  const distanceFromSensor = distance(sensorCoords, pointCoords);
+
+  return (distanceFromSensor <= sensorRange);
+
+}
+
+function distance([Ax, Ay]: [number, number], [Bx, By]: [number, number]) {
+  return Math.abs(Ax-Bx) + Math.abs(Ay-By)
 }
 
 
