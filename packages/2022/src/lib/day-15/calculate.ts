@@ -39,7 +39,7 @@ function inRange(sensorCoords: [number, number], beaconCoords: [number, number],
 
 }
 
-function distance([Ax, Ay]: [number, number], [Bx, By]: [number, number]) {
+export function distance([Ax, Ay]: [number, number], [Bx, By]: [number, number]) {
   return Math.abs(Ax-Bx) + Math.abs(Ay-By)
 }
 

@@ -3,6 +3,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { calculate } from './calculate';
 import { display } from "./display";
+import { findDistressBeacon } from './find-distress-beacon';
 
 const debugData = `Sensor at x=2, y=18: closest beacon is at x=-2, y=15
 Sensor at x=9, y=16: closest beacon is at x=10, y=16
@@ -26,14 +27,17 @@ const main = () => {
   console.log(answer0a);
   assert(answer0a === 26);
 
+  const answer0b = findDistressBeacon(debugData);
+  console.log(answer0b);
+  assert(answer0b === 56000011);
 
   const answer1 = calculate(fileContent, 2000000);
   console.log(answer1);
   assert(answer1 === 5525847);
 
-  // const answer2 = calculate(fileContent, 0, 4000000, 0, 4000000);
-  // console.log(answer2);
-  // assert(answer1 === );
+  const answer2 = findDistressBeacon(fileContent);
+  console.log(answer2);
+  assert(answer2 === 13340867187704);
 }
 
 main();

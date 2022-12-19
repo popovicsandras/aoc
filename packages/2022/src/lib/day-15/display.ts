@@ -18,7 +18,13 @@ export function display(dataStr: string) {
 
   process.stdout.write('     ');
   for (let x = left; x <= right; x++) {
-    process.stdout.write(Math.abs(Math.floor(x / 10)).toString());
+    process.stdout.write(x < 0 ? '-' : '+');
+  }
+  process.stdout.write('\n');
+
+  process.stdout.write('     ');
+  for (let x = left; x <= right; x++) {
+    process.stdout.write(Math.abs(x >= 0 ? Math.floor(x / 10) : Math.ceil(x / 10)).toString());
   }
   process.stdout.write('\n');
 
@@ -56,6 +62,24 @@ export function display(dataStr: string) {
       }
       process.stdout.write(sign);
     }
-    process.stdout.write('\n');
+    process.stdout.write(' ' + y.toString().padStart(3, ' ') + '\n');
   }
+
+  process.stdout.write('     ');
+  for (let x = left; x <= right; x++) {
+    process.stdout.write(x < 0 ? '-' : '+');
+  }
+  process.stdout.write('\n');
+
+  process.stdout.write('     ');
+  for (let x = left; x <= right; x++) {
+    process.stdout.write(Math.abs(x >= 0 ? Math.floor(x / 10) : Math.ceil(x / 10)).toString());
+  }
+  process.stdout.write('\n');
+
+  process.stdout.write('     ');
+  for (let x = left; x <= right; x++) {
+    process.stdout.write(Math.abs(x % 10).toString());
+  }
+  process.stdout.write('\n');
 }
